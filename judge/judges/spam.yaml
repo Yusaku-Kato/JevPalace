@@ -1,0 +1,19 @@
+name: スパム判定
+description: メール・SNS投稿・コメントがスパム/詐欺かどうか
+instruction: |
+  メッセージがスパム（迷惑広告・詐欺・フィッシング・無差別な勧誘）かを判定してください。
+  業務連絡・個人的な会話・正当な通知はスパムではありません。
+schema:
+  spam: {type: boolean, description: スパム・詐欺・フィッシングなら true}
+  category:
+    type: choice
+    options:
+      none: スパムではない
+      phishing: フィッシング・アカウント詐取
+      fraud: 当選詐称・投資詐欺など
+      advertising: 迷惑広告・無差別な勧誘
+examples:
+  - input: "【当選】あなたは100万円に選ばれました！今すぐこちらをクリック"
+    output: {spam: true, category: fraud}
+  - input: "明日の打ち合わせ、15時からでお願いします。"
+    output: {spam: false, category: none}

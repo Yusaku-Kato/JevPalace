@@ -1,0 +1,5 @@
+name: 汎用 Yes/No
+description: instruction に書いた条件を満たすか (スマートな if 文)
+instruction: 入力が条件を満たすかどうかを判定してください。
+schema:
+  answer: boolean

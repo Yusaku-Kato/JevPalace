@@ -1,0 +1,17 @@
+name: 問い合わせルーティング
+description: 問い合わせを担当窓口に振り分け、緊急度を付ける (JEV の route/score の例に相当)
+instruction: 顧客からの問い合わせを、対応すべき窓口に振り分けてください。
+schema:
+  route:
+    type: choice
+    options:
+      billing: 請求・支払い・返金・プラン変更
+      technical: 不具合・エラー・使い方
+      sales: 見積もり・新規契約・導入相談
+      account: ログイン・パスワード・個人情報の変更
+      other: 上記以外
+  score: {type: number, description: 緊急度 (0=急ぎではない, 1=今すぐ対応が必要)}
+  needs_human: {type: boolean, description: 定型回答では済まず担当者の対応が必要か}
+examples:
+  - input: "先月の請求額が二重に引き落とされています。至急確認してください"
+    output: {route: billing, score: 0.9, needs_human: true}

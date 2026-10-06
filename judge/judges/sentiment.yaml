@@ -1,0 +1,6 @@
+name: 感情分析
+description: 感情の極性と強さ
+instruction: 書き手の感情・評価を判定してください。
+schema:
+  sentiment: [positive, neutral, negative]
+  intensity: {type: number, description: 感情の強さ (0=淡々としている, 1=非常に強い)}

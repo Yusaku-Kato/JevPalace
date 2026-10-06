@@ -1,0 +1,22 @@
+# モデル (サイズが大きいので各自ダウンロード。README 参照)
+models/
+*.gguf
+
+# llama.cpp のバイナリ (100MB 超のファイルを含むため各自ダウンロード。README 参照)
+llama/
+
+# Claude Code / エージェント用ファイル
+AGENTS.md
+CLAUDE.md
+.claude/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# 実行時に生成されるもの
+judge/logs/
+.cache/
+tmp/*_cache.json
+tmp/*.csv

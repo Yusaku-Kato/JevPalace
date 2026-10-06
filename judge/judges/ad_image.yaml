@@ -1,0 +1,9 @@
+name: 広告画像判定
+description: 画像（＋任意のテキスト）が広告・宣伝物かどうか（画像モード用）
+accepts_images: true
+instruction: |
+  画像が商品・サービス・イベントの広告や宣伝物（バナー、チラシ、セール告知など）かどうかを判定してください。
+  画像内の文字、ロゴ、価格表示、購入を促す要素に注目してください。
+schema:
+  is_ad: {type: boolean, description: 広告・宣伝・販促物なら true}
+  kind: [banner, flyer, product_photo, screenshot, photo, illustration, other]

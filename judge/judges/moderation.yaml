@@ -1,0 +1,14 @@
+name: コンテンツモデレーション
+description: 投稿内容の問題カテゴリを同時に判定 (画像も可)
+accepts_images: true
+instruction: |
+  ユーザー投稿（テキスト・画像）に以下の問題が含まれるかを、項目ごとに独立して判定してください。
+  明確な根拠がない限り false にしてください。
+schema:
+  harassment: {type: boolean, description: 特定個人・集団への嫌がらせ、侮辱、脅迫}
+  hate: {type: boolean, description: 属性（人種・国籍・性別・宗教など）に基づく差別・憎悪表現}
+  sexual: {type: boolean, description: 性的に露骨な内容}
+  violence: {type: boolean, description: 暴力の描写・扇動・残虐表現}
+  self_harm: {type: boolean, description: 自傷・自殺の助長や詳細な方法}
+  personal_info: {type: boolean, description: 電話番号・住所・メールアドレス等の個人情報の暴露}
+  severity: {type: number, description: 全体の深刻度 (0=問題なし, 1=即削除レベル)}
