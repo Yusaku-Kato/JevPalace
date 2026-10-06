@@ -59,8 +59,8 @@ def test_compact_grammar():
               engine.parse_field("ok", "boolean"), engine.parse_field("n", "string")]
     g = engine.build_gbnf(fields, explain=True)
     assert g.startswith('root ::= "{" f0 f1 f2 f3 reason "}"')
-    assert 'f0 ::= "\\"route\\":" ("\\"a\\"" | "\\"b\\"")' in g
-    assert '"\\"10\\""' in g and 'f2 ::= ",\\"ok\\":" ("true" | "false")' in g
+    assert 'f0 ::= "\\"route\\": " ("\\"a\\"" | "\\"b\\"")' in g
+    assert '"\\"10\\""' in g and 'f2 ::= ", \\"ok\\": " ("true" | "false")' in g
 
 
 def test_parse_field_errors():

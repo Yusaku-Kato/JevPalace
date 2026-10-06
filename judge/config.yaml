@@ -85,6 +85,38 @@ backends:
       ctx_size: 16384
       image_max_tokens: 1024
 
+  # ---- LFM2.5 1.2B Instruct (Liquid AI。軽量・テキスト専用・思考なし) https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF ----
+  lfm2.5-1.2b:
+    kind: llamacpp
+    model_path: models/LFM2.5-1.2B-Instruct-Q8_0.gguf
+    port: 8093
+    reasoning_style: none
+    logprobs: true
+    json_mode: json_schema
+    common_args:
+      n_gpu_layers: 999
+      flash_attn: true
+      extra_args: ["--cache-ram", "0"]
+    text_profile:
+      parallel: 8
+      ctx_size: 32768
+
+  # ---- LFM2.5 8B-A1B (Liquid AI。MoE: 総 8.3B / 稼働 1.5B・テキスト専用) https://huggingface.co/LiquidAI/LFM2.5-8B-A1B-GGUF ----
+  lfm2.5-8b-a1b:
+    kind: llamacpp
+    model_path: models/LFM2.5-8B-A1B-Q8_0.gguf
+    port: 8094
+    reasoning_style: none
+    logprobs: true
+    json_mode: json_schema
+    common_args:
+      n_gpu_layers: 999
+      flash_attn: true
+      extra_args: ["--cache-ram", "0"]
+    text_profile:
+      parallel: 8
+      ctx_size: 32768
+
   # ---- 例: 別の GGUF モデルに差し替える (models/ に置いてパスを書くだけ) ----
   # qwen3-vl-8b:
   #   kind: llamacpp

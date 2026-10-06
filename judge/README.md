@@ -115,11 +115,15 @@ if d["action"] == "cancel_and_refund" and d["confidence"] > 0.9:
 
 | 名前 | モデル | 速度（1件、並列なし） | 備考 |
 |---|---|---|---|
-| `bonsai2`（既定） | Ternary-Bonsai-2-27B（2bit） | 約 0.35 秒 | 画像対応。精度重視 |
-| `qwen3.5-9b` | Qwen3.5-9B（Q6_K、unsloth 版） | 約 0.22 秒 | 画像対応。速度と精度のバランス型。思考オンにすると長く考える（`low` でも 10 秒以上） |
-| `qwen3-1.7b` | Qwen3-1.7B（Q8_0） | 約 0.08 秒 | テキストのみ。約 4〜5 倍速いが、判定ミスが目立つ |
+| `bonsai2`（既定） | Ternary-Bonsai-2-27B（2bit） | 約 0.43 秒 | 画像対応。精度重視 |
+| `qwen3.5-9b` | Qwen3.5-9B（Q6_K、unsloth 版） | 約 0.24 秒 | 画像対応。速度と精度のバランス型。思考オンにすると長く考える（`low` でも 10 秒以上） |
+| `lfm2.5-8b-a1b` | LFM2.5-8B-A1B（Q8_0） | 約 0.13 秒 | テキストのみ。MoE で稼働 1.5B。常に思考するモデルだが、思考オフ時は文法で即答させる |
+| `qwen3-1.7b` | Qwen3-1.7B（Q8_0） | 約 0.08 秒 | テキストのみ。速いが判定ミスが目立つ |
+| `lfm2.5-1.2b` | LFM2.5-1.2B-Instruct（Q8_0） | 約 0.07 秒 | テキストのみ。最速・最軽量（VRAM 約 6GB）だが、判定ミスが最も多い |
 
 `start-judge.bat --backend qwen3-1.7b` で起動するか、UI 右上のプルダウンで切り替えます。
+速度と正答率の比較はルートの [README](../README.md#モデルの比較rtx-4080思考オフ) を参照してください。
+自分の環境で測る場合は `samples\benchmark_models.py <バックエンド名...>` を使います。
 
 - **別の GGUF**: `kind: llamacpp` で `model_path`（画像対応なら `mmproj_path` も）を指定します。思考モードの無いモデルは `reasoning_style: none` にします。
 - **OpenAI 互換 API**（vLLM、Ollama、LM Studio、クラウドなど）: `kind: openai` で `base_url`, `model`, `api_key_env` を指定します。
@@ -138,7 +142,8 @@ if d["action"] == "cancel_and_refund" and d["confidence"] > 0.9:
 
 速度に関わる実装上の工夫:
 
-- 思考オフの時は、空白なしの JSON だけを許す GBNF 文法で出力させています。出力トークン数がほぼ半分になります（llama.cpp 系のバックエンドだけ。`compact_grammar: false` で無効にできます）。
+- 思考オフの時は、1 行の JSON（`{"a": "x", "b": true}`）だけを許す GBNF 文法で出力させています。改行やインデントを生成しない分、出力トークン数が大きく減ります（llama.cpp 系のバックエンドだけ。`compact_grammar: false` で無効にできます）。
+  - `": "` の空白まで詰めると、文字列の抽出でモデルが空文字を返しやすくなるため、空白は残しています。
 - llama-server の RAM プロンプトキャッシュは無効にしています（`--cache-ram 0`）。このモデルは 1 エントリが約 610MB あり、並列処理の妨げになるためです。
 - 注意: このモデルの 2bit 形式（PQ2_0）は、同時に複数件処理してもあまり速くなりません（1 件ずつ約 55 トークン/秒、8 件同時でも合計約 60 トークン/秒）。並列化による短縮はおよそ 1.4 倍が上限です。
 

@@ -13,6 +13,7 @@ judge\.venv\Scripts\python.exe samples\prefectures_winners_or_losers.py
 | [world_leaders_good_or_evil.py](world_leaders_good_or_evil.py) | 現在の各国の指導者（約 360 人）を「善人か悪人か」判定 | 外部データ（Wikidata）を取得してキャッシュし、判定にかける |
 | [billionaires_genius_or_not.py](billionaires_genius_or_not.py) | 世界長者番付トップ 500 を「天才か凡才か」判定 | `ThreadPoolExecutor` による並列リクエスト |
 | [prefectures_winners_or_losers.py](prefectures_winners_or_losers.py) | 47 都道府県の住民を「勝ち組か負け組か」判定 | 並列処理と、1 件ごとの処理時間・往復時間の計測 |
+| [benchmark_models.py](benchmark_models.py) | 複数のモデルで上のサンプルを実行し、速度と正答率（16 問）を比較 | `POST /v1/backends/switch` によるモデル切替（例: `benchmark_models.py qwen3-1.7b lfm2.5-1.2b`） |
 
 ## 共通のオプション
 

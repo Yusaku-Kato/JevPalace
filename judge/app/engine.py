@@ -134,14 +134,16 @@ def _gbnf_lit(s: str) -> str:
 
 
 def build_gbnf(fields: list[FieldSpec], explain: bool) -> str:
-    """空白なしのコンパクトな JSON だけを許す文法。
+    """1 行の JSON ({"a": "x", "b": true}) だけを許す文法。
 
     json_schema の文法は改行・インデントを許すため、モデルが空白トークンを生成して遅くなる。
-    出力トークン数がほぼ半分になり、思考オフ時の判定が速くなる。
+    改行を禁じることで出力トークン数を大きく減らし、思考オフ時の判定を速くする。
+    ※ ": " / ", " の空白は残す。'"key":"' のように詰めるとトークン列が不自然になり、
+      文字列フィールドでモデルが空文字を返しやすくなる (実測で全モデルが抽出に失敗した)。
     """
     rules, parts = [], []
     for i, f in enumerate(fields):
-        key = json.dumps(f.name, ensure_ascii=False) + ":"
+        key = json.dumps(f.name, ensure_ascii=False) + ": "
         if f.kind == "choice":
             alts = [json.dumps(o, ensure_ascii=False) for o in f.options]
         elif f.kind == "score":
@@ -150,14 +152,14 @@ def build_gbnf(fields: list[FieldSpec], explain: bool) -> str:
             alts = ["true", "false"]
         else:
             alts = None
-        prefix = ("," if i else "") + key
+        prefix = (", " if i else "") + key
         if alts is not None:
             rules.append(f"f{i} ::= {_gbnf_lit(prefix)} ({' | '.join(_gbnf_lit(a) for a in alts)})")
         else:
             rules.append(f'f{i} ::= {_gbnf_lit(prefix)} "\\"" char{{0,{f.max_length}}} "\\""')
         parts.append(f"f{i}")
     if explain:
-        rules.append(f'reason ::= {_gbnf_lit(","+json.dumps("reason")+":")} "\\"" char{{0,600}} "\\""')
+        rules.append(f'reason ::= {_gbnf_lit(", " + json.dumps("reason") + ": ")} "\\"" char{{0,600}} "\\""')
         parts.append("reason")
     rules.append(r'char ::= [^"\\\x00-\x1f] | "\\" ["\\/bfnrt]')
     return "\n".join([f'root ::= "{{" {" ".join(parts)} "}}"'] + rules)

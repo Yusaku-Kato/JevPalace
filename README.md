@@ -55,6 +55,8 @@ Windows・CUDA 12 版をダウンロードし、中身を `llama\` フォルダ�
 | `qwen3.5-9b` | `Qwen3.5-9B-Q6_K.gguf`（7.0GB） | [unsloth/Qwen3.5-9B-GGUF](https://huggingface.co/unsloth/Qwen3.5-9B-GGUF) |
 | 〃（画像用） | `mmproj-F16.gguf` を `Qwen3.5-9B-mmproj-F16.gguf` という名前で保存（0.9GB） | 同上 |
 | `qwen3-1.7b` | `Qwen3-1.7B-Q8_0.gguf`（1.8GB） | [Qwen/Qwen3-1.7B-GGUF](https://huggingface.co/Qwen/Qwen3-1.7B-GGUF) |
+| `lfm2.5-8b-a1b` | `LFM2.5-8B-A1B-Q8_0.gguf`（8.4GB） | [LiquidAI/LFM2.5-8B-A1B-GGUF](https://huggingface.co/LiquidAI/LFM2.5-8B-A1B-GGUF) |
+| `lfm2.5-1.2b` | `LFM2.5-1.2B-Instruct-Q8_0.gguf`（1.2GB） | [LiquidAI/LFM2.5-1.2B-Instruct-GGUF](https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF) |
 
 例:
 
@@ -84,12 +86,19 @@ Python から API を呼ぶ例は [samples/](samples/) にあります。
 
 ## モデルの比較（RTX 4080、思考オフ）
 
-| | Bonsai 2（27B） | Qwen3.5-9B | Qwen3-1.7B |
-|---|---|---|---|
-| 1 件あたり | 約 0.37 秒 | 約 0.22 秒 | 約 0.08 秒 |
-| 47 件を 8 並列で処理 | 12.6 秒 | 7.6 秒 | 2.4 秒 |
-| 画像 | ✅ | ✅ | — |
-| 判定精度（手元のテスト） | 高い | 高い | ミスが目立つ |
+[samples/benchmark_models.py](samples/benchmark_models.py) で、サンプルスクリプトの実行時間と、答えがはっきりしている 16 問の正答数を測った結果です。
+
+| バックエンド | 1 件ずつ | 8 並列 | 正答（/16） | VRAM | 画像 |
+|---|---|---|---|---|---|
+| `bonsai2`（27B、2bit） | 430ms/件 | 338ms/件 | 16 | 14.4GB | ✅ |
+| `qwen3.5-9b` | 241ms/件 | 153ms/件 | 16 | 12.3GB | ✅ |
+| `lfm2.5-8b-a1b`（MoE、稼働 1.5B） | 133ms/件 | 86ms/件 | 14 | 13.3GB | — |
+| `qwen3-1.7b` | 84ms/件 | 46ms/件 | 13 | 9.8GB | — |
+| `lfm2.5-1.2b` | 74ms/件 | 40ms/件 | 10 | 5.9GB | — |
+
+- 「1 件ずつ」は総理大臣 66 人のサンプル、「8 並列」は長者番付 100 人のサンプルの値です。子プロセスの起動時間を含みます。
+- VRAM は、並列 8・コンテキスト 32K の設定での値です。
+- 正答数は 16 問だけの目安です。用途に合わせて、自分のデータで確かめてください。
 
 ## ディレクトリ構成
 
