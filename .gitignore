@@ -18,5 +18,5 @@ __pycache__/
 # 実行時に生成されるもの
 judge/logs/
 .cache/
-tmp/*_cache.json
-tmp/*.csv
+samples/*_cache.json
+samples/*.csv

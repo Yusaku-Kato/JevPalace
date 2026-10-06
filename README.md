@@ -32,7 +32,7 @@ API の詳細、schema の書き方、プリセットの作り方は [judge/READ
 ### 1. リポジトリを取得する
 
 ```bat
-git clone https://github.com/<user>/JevPalace.git
+git clone https://github.com/Yusaku-Kato/JevPalace.git
 cd JevPalace
 ```
 
@@ -80,6 +80,8 @@ start-judge.bat --backend qwen3.5-9b     rem 別のモデルで起動
 
 API ドキュメント（Swagger UI）は http://127.0.0.1:8700/docs で見られます。
 
+Python から API を呼ぶ例は [samples/](samples/) にあります。
+
 ## モデルの比較（RTX 4080、思考オフ）
 
 | | Bonsai 2（27B） | Qwen3.5-9B | Qwen3-1.7B |
@@ -99,7 +101,7 @@ JevPalace/
 │   ├─ tests/          テスト
 │   ├─ config.yaml     バックエンド (モデル) の設定
 │   └─ README.md       API の詳細
-├─ tmp/                API を使った一時的な実験スクリプト
+├─ samples/            API の使い方サンプル集 (並列処理・確信度の扱いなど)
 ├─ llama/              llama.cpp のバイナリ (各自ダウンロード、git 管理外)
 ├─ models/             GGUF モデル (各自ダウンロード、git 管理外)
 └─ start-judge.bat     起動スクリプト
@@ -116,4 +118,4 @@ judge\.venv\Scripts\python.exe judge\tests\smoke.py          rem 起動中の AP
 
 - 判定結果はモデルの出力であり、正しさは保証されません。確信度も、モデルの偏りをそのまま反映します。
 - 既定の Bonsai 2 は拒否応答を取り除いた（abliterated）版です。用途に応じてモデルを選んでください。
-- `tmp/` のスクリプトは、実在の人物や地域についてモデルの主観的な判定を出力する実験です。結果は事実に基づく評価ではありません。
+- `samples/` のスクリプトは、実在の人物や地域を題材にモデルの主観的な判定を出力する使い方の例です。結果は事実に基づく評価ではありません。

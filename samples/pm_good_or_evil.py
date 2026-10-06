@@ -1,7 +1,7 @@
-"""一時スクリプト: 日本の歴代内閣総理大臣を一人ずつ「善人か悪人か」判定する。
+"""サンプル: 日本の歴代内閣総理大臣を一人ずつ「善人か悪人か」判定する。
 
 usage (先に start-judge.bat で API を起動しておく):
-    judge\\.venv\\Scripts\\python.exe tmp\\pm_good_or_evil.py [--explain] [--reasoning low] [--csv out.csv]
+    judge\\.venv\\Scripts\\python.exe samples\\pm_good_or_evil.py [--explain] [--reasoning low] [--csv out.csv]
 
 ※ 結果はローカル LLM (既定: Bonsai 2) の主観的な出力であり、歴史的・事実的な評価ではない。
 """

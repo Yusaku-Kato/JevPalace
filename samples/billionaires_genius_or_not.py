@@ -1,10 +1,10 @@
-"""一時スクリプト: 世界長者番付 (Forbes リアルタイム) トップ 500 を「天才か凡才か」並列で判定する。
+"""サンプル: 世界長者番付 (Forbes リアルタイム) トップ 500 を「天才か凡才か」並列で判定する。
 
 usage (先に start-judge.bat で API を起動しておく):
-    judge\\.venv\\Scripts\\python.exe tmp\\billionaires_genius_or_not.py [--workers 8] [--limit 20]
+    judge\\.venv\\Scripts\\python.exe samples\\billionaires_genius_or_not.py [--workers 8] [--limit 20]
         [--explain] [--reasoning low] [--csv out.csv] [--refresh]
 
-- 長者番付は Forbes の非公式 JSON エンドポイントから取得し、tmp\\billionaires_cache.json に保存する
+- 長者番付は Forbes の非公式 JSON エンドポイントから取得し、samples\\billionaires_cache.json に保存する
   (2 回目以降はキャッシュを使う。--refresh で取り直し)。
 - 並列数の既定は API の並列スロット数 (画像オフ時 8)。それ以上にしても速くはならない。
 

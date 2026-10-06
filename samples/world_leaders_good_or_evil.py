@@ -1,14 +1,14 @@
-"""一時スクリプト: 現在の各国の指導者を一人ずつ「善人か悪人か」判定する。
+"""サンプル: 現在の各国の指導者を一人ずつ「善人か悪人か」判定する。
 
 指導者の一覧は実行時に Wikidata から取得する (主権国家ごとの国家元首 P35 / 政府の長 P6)。
 ハードコードしないのは、指導者が頻繁に入れ替わるため。
 
 usage (先に start-judge.bat で API を起動しておく):
-    judge\\.venv\\Scripts\\python.exe tmp\\world_leaders_good_or_evil.py --contact you@example.com
+    judge\\.venv\\Scripts\\python.exe samples\\world_leaders_good_or_evil.py --contact you@example.com
         [--role both|head_of_state|head_of_government] [--explain] [--reasoning low] [--csv out.csv] [--limit 10]
 
 --contact は Wikidata の User-Agent ポリシーで必要 (無いと 403)。初回だけ必要で、取得結果は
-tmp\\leaders_cache.json に保存され、2 回目以降はそれを使う (--refresh で取り直し)。
+samples\\leaders_cache.json に保存され、2 回目以降はそれを使う (--refresh で取り直し)。
 
 ※ 結果はローカル LLM (既定: Bonsai 2) の主観的な出力であり、事実的な評価ではない。
 ※ Wikidata の内容は最新とは限らない (就任直後の指導者が反映されていないことがある)。
@@ -55,7 +55,7 @@ def fetch_bindings(contact: str | None, refresh: bool) -> list[dict]:
                  "例: --contact you@example.com")
     print("Wikidata から指導者一覧を取得中…", flush=True)
     r = httpx.get(WIKIDATA, params={"query": QUERY, "format": "json"}, timeout=120,
-                  headers={"User-Agent": f"JevPalace-tmp-script/0.1 ({contact}) httpx/{httpx.__version__}",
+                  headers={"User-Agent": f"JevPalace-sample/0.1 ({contact}) httpx/{httpx.__version__}",
                            "Accept": "application/sparql-results+json"})
     r.raise_for_status()
     bindings = r.json()["results"]["bindings"]

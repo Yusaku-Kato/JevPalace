@@ -1,7 +1,7 @@
-"""一時スクリプト: 47 都道府県について、そこに住む人が「勝ち組か負け組か」を並列で判定する。
+"""サンプル: 47 都道府県について、そこに住む人が「勝ち組か負け組か」を並列で判定する。
 
 usage (先に start-judge.bat で API を起動しておく):
-    judge\\.venv\\Scripts\\python.exe tmp\\prefectures_winners_or_losers.py [--workers 8] [--explain] [--csv out.csv]
+    judge\\.venv\\Scripts\\python.exe samples\\prefectures_winners_or_losers.py [--workers 8] [--explain] [--csv out.csv]
 
 各行の時間:
     処理 = API 内で判定にかかった時間 (meta.latency_ms)
